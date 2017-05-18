@@ -70,7 +70,7 @@ namespace OneDrive_CameraUploaderManager
         private Task OnAuthenticationFailed(AuthenticationFailedNotification<OpenIdConnectMessage, OpenIdConnectAuthenticationOptions> context)
         {
             context.HandleResponse();
-            context.Response.Redirect("/Home/?errormessage=" + context.Exception.Message);
+            context.Response.Redirect("/?errormessage=" + context.Exception.Message);
             return Task.FromResult(0);
         }
     }

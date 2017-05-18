@@ -15,6 +15,11 @@ namespace OneDrive_CameraUploaderManager.Controllers
     /// </summary>
     public class LoginController : Controller
     {
+        public ActionResult Index()
+        {
+            return View();
+        }
+
         public void SignIn()
         {
             if (!Request.IsAuthenticated)
@@ -22,7 +27,7 @@ namespace OneDrive_CameraUploaderManager.Controllers
                 HttpContext.GetOwinContext().Authentication.Challenge(
                     new AuthenticationProperties
                     {
-                        RedirectUri = "/"
+                        RedirectUri = "/Home/"
                     },
                     OpenIdConnectAuthenticationDefaults.AuthenticationType
                 );
@@ -36,8 +41,10 @@ namespace OneDrive_CameraUploaderManager.Controllers
         {
             HttpContext.GetOwinContext().Authentication.SignOut(
                 OpenIdConnectAuthenticationDefaults.AuthenticationType,
-                CookieAuthenticationDefaults.AuthenticationType    
+                CookieAuthenticationDefaults.AuthenticationType   
             );
+
+            RedirectToAction("Index", "Login");
         }
     }
 }
