@@ -44,7 +44,7 @@ namespace OneDrive_CameraUploaderManager.Controllers
                 CookieAuthenticationDefaults.AuthenticationType   
             );
 
-            RedirectToAction("Index", "Login");
+            Response.Redirect("/Login", false);
         }
     }
 }
