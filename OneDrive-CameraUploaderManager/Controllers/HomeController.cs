@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace OneDrive_CameraUploaderManager.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         public ActionResult Index()
