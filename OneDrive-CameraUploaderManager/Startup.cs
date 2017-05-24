@@ -1,12 +1,12 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using Microsoft.IdentityModel.Protocols;
 using Microsoft.Owin;
-using Owin;
-using Microsoft.IdentityModel.Protocols;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
-using Microsoft.Owin.Security.OpenIdConnect;
 using Microsoft.Owin.Security.Notifications;
+using Microsoft.Owin.Security.OpenIdConnect;
+using Owin;
+using System;
+using System.Threading.Tasks;
 
 [assembly: OwinStartup(typeof(OneDrive_CameraUploaderManager.Startup))]
 
@@ -53,11 +53,21 @@ namespace OneDrive_CameraUploaderManager
                     TokenValidationParameters = new System.IdentityModel.Tokens.TokenValidationParameters()
                     {
                         ValidateIssuer = false
+                        // In a real application you would use IssuerValidator for additional checks, 
+                        // like making sure the user's organization has signed up for your app.
+                        //     IssuerValidator = (issuer, token, tvp) =>
+                        //     {
+                        //         if (MyCustomTenantValidation(issuer)) 
+                        //             return issuer;
+                        //         else
+                        //             throw new SecurityTokenInvalidIssuerException("Invalid issuer");
+                        //     }
                     },
                     // OpenIdConnectAuthenticationNotifications configures OWIN to send notification of failed authentications to OnAuthenticationFailed method
                     Notifications = new OpenIdConnectAuthenticationNotifications
                     {
-                        AuthenticationFailed = OnAuthenticationFailed
+                        AuthenticationFailed = OnAuthenticationFailed,
+                        
                     }
                 });
         }
@@ -70,7 +80,7 @@ namespace OneDrive_CameraUploaderManager
         private Task OnAuthenticationFailed(AuthenticationFailedNotification<OpenIdConnectMessage, OpenIdConnectAuthenticationOptions> context)
         {
             context.HandleResponse();
-            context.Response.Redirect("/?errormessage=" + context.Exception.Message);
+            context.Response.Redirect("/Error?errormessage=" + context.Exception.Message);
             return Task.FromResult(0);
         }
     }
